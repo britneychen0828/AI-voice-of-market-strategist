@@ -126,7 +126,7 @@ Use when:
 - there are limited firsthand signals or meaningful counter-signals
 
 Examples:
-- switching cost from Claude ecosystem matters
+- switching cost from Kimi ecosystem matters
 - session continuity is an issue, but evidence volume is modest
 
 ### Low Confidence

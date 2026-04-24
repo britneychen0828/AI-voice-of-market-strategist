@@ -127,6 +127,11 @@ Before finalizing, also check:
 - Do reported signal counts add up correctly?
 - Did I label a theme as consensus when it is really only high-severity or high-salience?
 - Did I include any Low-confidence item in the roadmap?
+- Is the exported HTML syntactically valid and likely to render correctly in a normal browser?
+- Did I accidentally introduce broken CSS or malformed `content:` strings?
+- Did I reference any local filesystem path in `img`, `src`, `href`, or CSS `url(...)` that will break on another machine?
+- Does every repeated UI component class used in the HTML have a matching CSS rule that targets the actual DOM structure?
+- Did any repeated logo, footer, chip, or card element lose its size constraints because of an overly specific or incorrect selector?
 
 ## Report format
 
@@ -264,6 +269,8 @@ The HTML document must:
 - Make pull quotes or evidence quotes visually distinct
 - Optimize for reading, printing, sharing, and screenshotting
 - Faithfully reproduce the full report content with no truncation
+- Be valid standalone HTML5 with well-formed tags and valid CSS syntax
+- Avoid browser-fragile markup patterns that commonly render poorly in exported documents
 
 Recommended visual direction:
 - Page width around 860px to 980px
@@ -294,6 +301,14 @@ Required report layout components:
 - Section openers that feel distinct from body paragraphs
 - Tables with true header styling, zebra striping, and confidence chips or emphasis styling where appropriate
 - Quote blocks that look editorial, not like default browser blockquotes
+
+HTML and CSS safety rules for the report:
+- Use a proper `<!DOCTYPE html>` and standard HTML structure
+- Keep CSS syntactically valid; do not emit malformed strings such as broken `content:` declarations
+- If you use decorative quote marks in CSS, use valid escaped or quoted characters such as `content: "“";`
+- Do not nest large `blockquote` elements inside list bullets when a separate paragraph or card layout would render more reliably
+- Prefer simple, robust layout patterns over brittle browser hacks
+- If an element relies on a reusable class for size or placement, define that class directly rather than only through a selector that assumes a different parent structure
 
 Avoid these report design failures:
 - Pure black/gray only palettes
@@ -326,6 +341,10 @@ Brand asset behavior:
 - If no brand assets are present, fall back to the default design system
 - If the analyzed company is Kimi or Moonshot and `references/assets/logo-kimi.svg` or `references/assets/logo-kimi.png` exists, use that asset by default for the report even if a generic logo path is absent
 - For companies other than Kimi / Moonshot, use only user-provided brand assets and do not substitute the Kimi logo
+- For portable sharing, embed local logos directly in the HTML as data URIs or inline SVG whenever feasible instead of pointing to local file paths
+- Do not use absolute local paths or machine-specific relative paths in exported HTML
+- Every rendered logo element must have explicit size constraints such as `height`, `max-height`, and `width: auto`
+- Repeated corner logos, footer logos, and watermark logos must use stable component classes with direct CSS rules
 
 Brand safety rules:
 - Do not fetch logos from the web on your own
@@ -411,6 +430,7 @@ Default file naming:
 
 The output should be a true presentation-style HTML deck, not a plain article page and not a text outline dumped into one long document.
 Each slide should have a clear visual container and presentation hierarchy suitable for fullscreen viewing or export.
+The deck HTML must also be valid standalone HTML5 with valid CSS and no machine-specific asset paths.
 
 ### Optional brand asset injection for the deck
 
@@ -423,6 +443,8 @@ Deck-specific brand behavior:
 - If brand colors conflict with readability, use the default system and note the conflict internally rather than degrading the deck
 - If the analyzed company is Kimi or Moonshot and `references/assets/logo-kimi.svg` or `references/assets/logo-kimi.png` exists, use that Kimi logo on the title slide and deck chrome by default
 - For non-Kimi brands, only use assets explicitly provided for that brand
+- For portable sharing, embed local logos directly in the deck HTML as data URIs or inline SVG whenever feasible instead of pointing to local file paths
+- If a small corner logo is used on multiple slides, define a direct selector such as `.logo-corner` with explicit sizing and placement; do not rely on descendant selectors that only work in one slide template
 
 ### Deck design direction
 
@@ -467,6 +489,8 @@ Deck composition rules:
 - Use accent color intentionally to guide attention, not merely as a thin black line
 - Use section divider slides when helpful to reset pacing
 - Keep speaker-safe whitespace; do not crowd edges or corners
+- Keep slide markup and CSS robust enough to render in a standard browser without JS errors or broken styles
+- Ensure non-title slides cannot be visually destroyed by one oversized asset; cap media with `max-width` / `max-height` and template-safe placement
 
 Avoid these deck design failures:
 - Monochrome black/gray slides with no visual identity
@@ -487,5 +511,13 @@ The deck must remain faithful to the analysis.
 - Do not invent metrics
 - Do not convert directional observations into quantified claims unless the source supports it
 - Do not turn mixed evidence into a "market consensus" slide
+
+Before finalizing the deck, also verify:
+- all slide assets are portable
+- no local file path is required to render the logo
+- CSS is syntactically valid
+- the first slide can render correctly as a cover slide on another machine
+- repeated logo instances on slides 2+ render at the intended small size
+- no slide contains an unbounded image or SVG that can overrun the layout
 
 After writing the deck file, tell the user the exact file path.
