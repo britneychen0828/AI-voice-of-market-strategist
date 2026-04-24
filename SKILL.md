@@ -23,6 +23,9 @@ Accept any of these without complaint:
 
 If the product or company context is unclear, ask one focused clarifying question before proceeding. Ask only one question unless the user explicitly wants a back-and-forth.
 
+If the user provides brand assets such as a logo, brand colors, or typography preferences, apply them consistently to the exported report and deck. If no brand assets are provided, use the default visual system described below.
+If the company being analyzed is Kimi or Moonshot, prefer the Kimi brand assets from the workspace when available.
+
 ## Core operating rules
 
 These rules matter more than sounding polished.
@@ -270,7 +273,65 @@ Recommended visual direction:
 - Avoid flashy gradients, dashboards, or web-app-like cards
 - Make the document feel editorial and board-ready, not like exported Markdown
 
+Required visual system for the report:
+- Use a fixed palette rather than generic grayscale only
+- Primary ink: `#172033`
+- Accent: `#1f6feb` or `#0f766e`
+- Soft accent background: `#eef4ff` or `#ecfeff`
+- Border neutral: `#d9e0ea`
+- Canvas/background: `#f5f7fb`
+- Reading surface: `#ffffff`
+
+Typography guidance for the report:
+- Headings should use a serif or editorial-feeling stack such as `Iowan Old Style`, `Georgia`, `"Times New Roman"`, serif
+- Body copy should use a clean sans-serif stack such as `Inter`, `"Segoe UI"`, `Arial`, sans-serif
+- H1 should feel like a title page headline, not a default app heading
+- H2s should use an accent rule, side bar, or section label treatment to create visual rhythm
+
+Required report layout components:
+- A title block with title, subtitle/meta, and a restrained top accent treatment
+- An executive summary callout with tinted background and accent border
+- Section openers that feel distinct from body paragraphs
+- Tables with true header styling, zebra striping, and confidence chips or emphasis styling where appropriate
+- Quote blocks that look editorial, not like default browser blockquotes
+
+Avoid these report design failures:
+- Pure black/gray only palettes
+- Default system-font-only styling with no role separation between headings and body
+- Plain underlined headings with no section identity
+- Raw Markdown converted to HTML without typographic refinement
+
 After writing the file, tell the user the exact file path.
+
+### Optional brand asset injection for the report
+
+Support optional brand asset injection.
+
+If the workspace contains brand assets or the user explicitly provides them, use them in the export.
+
+Preferred asset locations:
+- `references/assets/logo.svg`
+- `references/assets/logo-primary.svg`
+- `references/assets/logo-dark.svg`
+- `references/assets/logo-light.svg`
+- `references/assets/logo-kimi.svg`
+- `references/assets/logo-kimi.png`
+- `references/assets/brand.json`
+
+Brand asset behavior:
+- If a logo is present, place it in the title block or top brand bar with disciplined sizing and whitespace
+- Do not stretch, crop, recolor, or distort the logo unless the user explicitly requests it
+- If both light and dark logo variants exist, choose the one with proper contrast for the background
+- If `brand.json` exists, use it for brand colors, typography preferences, or layout hints when compatible with readability
+- If no brand assets are present, fall back to the default design system
+- If the analyzed company is Kimi or Moonshot and `references/assets/logo-kimi.svg` or `references/assets/logo-kimi.png` exists, use that asset by default for the report even if a generic logo path is absent
+- For companies other than Kimi / Moonshot, use only user-provided brand assets and do not substitute the Kimi logo
+
+Brand safety rules:
+- Do not fetch logos from the web on your own
+- Do not invent a logo
+- Do not assume a company brand unless the user provided the asset or clearly named the owning brand
+- Keep the document structured and readable; brand treatment should support the content, not overpower it
 
 ## Optional pitch deck export
 
@@ -351,6 +412,18 @@ Default file naming:
 The output should be a true presentation-style HTML deck, not a plain article page and not a text outline dumped into one long document.
 Each slide should have a clear visual container and presentation hierarchy suitable for fullscreen viewing or export.
 
+### Optional brand asset injection for the deck
+
+Support optional brand asset injection for the deck using the same asset locations and rules as the report.
+
+Deck-specific brand behavior:
+- If a logo is present, use it on the title slide and optionally in a small footer or corner mark on content slides
+- Keep logo placement consistent across slides
+- Let brand colors influence accents, dividers, tags, and highlights, but preserve legibility
+- If brand colors conflict with readability, use the default system and note the conflict internally rather than degrading the deck
+- If the analyzed company is Kimi or Moonshot and `references/assets/logo-kimi.svg` or `references/assets/logo-kimi.png` exists, use that Kimi logo on the title slide and deck chrome by default
+- For non-Kimi brands, only use assets explicitly provided for that brand
+
 ### Deck design direction
 
 The deck should look premium and restrained:
@@ -363,6 +436,44 @@ The deck should look premium and restrained:
 - Charts or simple tables only when they clarify the point
 - Use clear slide layouts with consistent structure, speaker-safe spacing, and readable hierarchy
 - Prefer structured title-and-content, section divider, quote, and roadmap layouts over generic bullet dumps
+
+Required visual system for the deck:
+- Use a fixed presentation palette rather than black/gray defaults
+- Primary background: `#f4f7fb`
+- Slide surface: `#ffffff`
+- Primary ink: `#172033`
+- Accent: `#2563eb`
+- Secondary accent: `#14b8a6`
+- Warning/emphasis: `#f59e0b`
+- Border neutral: `#dbe4f0`
+
+Typography guidance for the deck:
+- Title slides and major slide headings should use a high-contrast serif or display-feeling heading stack such as `Canela`, `Georgia`, or `"Times New Roman"` fallback
+- Body text and labels should use a modern sans-serif stack such as `Inter`, `"Segoe UI"`, `Arial`, sans-serif
+- Slides should clearly differentiate headline, support copy, labels, and metadata
+
+Preferred slide templates:
+- Title slide
+- Big-idea slide with one headline and one proof point
+- Two-column comparison slide
+- Evidence quote slide
+- Metrics/stats slide
+- Roadmap table slide
+- Closing recommendation slide
+
+Deck composition rules:
+- Do not use the exact same layout shell on every slide
+- At least 3 slide template types should appear in a 10-slide deck
+- Use accent color intentionally to guide attention, not merely as a thin black line
+- Use section divider slides when helpful to reset pacing
+- Keep speaker-safe whitespace; do not crowd edges or corners
+
+Avoid these deck design failures:
+- Monochrome black/gray slides with no visual identity
+- Bullet dumps that read like a memo pasted into slides
+- Identical card layout repeated across every slide
+- Decorative bars that substitute for actual hierarchy
+- Browser-page styling masquerading as a pitch deck
 
 Avoid:
 - Generic startup gradient overload

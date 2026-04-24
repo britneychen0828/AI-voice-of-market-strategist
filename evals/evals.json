@@ -1,4 +1,176 @@
 {
   "skill_name": "voice-of-market-strategist",
-  "evals": []
+  "evals": [
+    {
+      "id": "exact-quote-preservation",
+      "description": "Checks that quoted text remains an exact substring of the input and is not cleaned up, merged, or paraphrased inside quotation marks.",
+      "input": {
+        "product_context": "AI coding assistant",
+        "signals": [
+          "Yo Kimi 2.6 is fast and all, but like what the hell is it doing most of the time??",
+          "Just tried it and basically just ran around in circles burning tokens, 2nd guessing itself at every turn.",
+          "I actually preferred using it without reasoning mode."
+        ]
+      },
+      "expectations": [
+        "Any quoted phrase must match the source input exactly.",
+        "The output must not introduce altered quotes such as corrected grammar, merged snippets, or typo-fixed variants.",
+        "The analysis should identify overthinking or token inefficiency as a supported theme."
+      ],
+      "failure_modes": [
+        "Quotes text that is not an exact substring of the input.",
+        "Invents a quote by merging two adjacent signals.",
+        "Uses quotation marks around paraphrases."
+      ]
+    },
+    {
+      "id": "vendor-claim-filtering",
+      "description": "Checks that official launch claims and community retellings are not treated as equivalent to firsthand user evidence.",
+      "input": {
+        "product_context": "AI coding assistant",
+        "signals": [
+          "I used it for UI tweaks in my Electron app and it did surprisingly well.",
+          "The release notes say it autonomously refactored a financial engine for 13 hours and improved throughput by 1.8x.",
+          "Agent Swarm expanded from 100 sub-agents to 300 according to the announcement."
+        ]
+      },
+      "expectations": [
+        "The firsthand UI-tweaks comment should count as primary user evidence.",
+        "The release-note and announcement claims should be labeled as official or vendor claims, or low-confidence narrative input.",
+        "The output must not present agent-swarm scale or benchmark-style claims as proven product strengths based on user evidence."
+      ],
+      "failure_modes": [
+        "Lists vendor claims as validated user strengths.",
+        "Uses official claims to drive a high-confidence roadmap item.",
+        "Blurs firsthand use with launch-note narrative."
+      ]
+    },
+    {
+      "id": "dedupe-and-count-reconciliation",
+      "description": "Checks that bilingual and near-duplicate signals are deduplicated carefully and that reported category counts reconcile to the distinct-signal total.",
+      "input": {
+        "product_context": "AI coding assistant",
+        "signals": [
+          "Open-source, affordable, long-range reliable — worth paying attention to.",
+          "开源、便宜、长程可靠——值得关注。",
+          "API key returns 401 after loading credits.",
+          "After loading credits the API key returns 401.",
+          "The token pricing is very reasonable."
+        ]
+      },
+      "expectations": [
+        "Bilingual restatements and obvious near-duplicates should not be counted as fully independent signals without explanation.",
+        "If the output reports a distinct-signal total and bucket counts, those counts must reconcile.",
+        "If exact counts are uncertain, the output should describe the signal mix qualitatively rather than inventing approximations."
+      ],
+      "failure_modes": [
+        "Counts duplicates as independent signals without note.",
+        "Reports bucket counts that do not sum to the distinct total.",
+        "Claims precise deduplication while using obviously inflated totals."
+      ]
+    },
+    {
+      "id": "insufficient-signal-discipline",
+      "description": "Checks that the skill does not overstate Branding or Growth conclusions when the dataset is mostly product feedback.",
+      "input": {
+        "product_context": "Developer AI model",
+        "signals": [
+          "The model is good at coding but overthinks.",
+          "Rate limits made the trial unusable.",
+          "The API key keeps returning 401.",
+          "It is pretty good for the price."
+        ]
+      },
+      "expectations": [
+        "Product and Technology sections may be confident.",
+        "Branding and Growth should be clearly marked as thin, directional, or insufficiently supported.",
+        "The output should not fabricate emotional brand narratives or confident growth loops from thin evidence."
+      ],
+      "failure_modes": [
+        "Writes a strong branding thesis without supporting signals.",
+        "Claims clear acquisition or referral loops from sparse product-only data.",
+        "Overextends the section structure instead of acknowledging thin evidence."
+      ]
+    },
+    {
+      "id": "consensus-vs-high-severity",
+      "description": "Checks that the skill distinguishes between a severe repeated issue and a true majority consensus.",
+      "input": {
+        "product_context": "AI coding assistant launch",
+        "signals": [
+          "The API key returns 401 after I paid.",
+          "Too many people trying please upgrade.",
+          "The free trial was unusable because of portal rate limits.",
+          "It is excellent for coding.",
+          "Very good for the price.",
+          "Strong tool calling.",
+          "Not great with reasoning though.",
+          "The charts posted by the team look honest."
+        ]
+      },
+      "expectations": [
+        "The output should identify access failures as a severe repeated problem.",
+        "The output should avoid calling that issue a broad market consensus unless the distribution clearly supports that claim.",
+        "Consensus and tension sections should be proportionate to actual signal distribution."
+      ],
+      "failure_modes": [
+        "Turns a concentrated failure cluster into universal agreement.",
+        "Uses 'everyone agrees' style language without support.",
+        "Ignores meaningful positive or mixed counter-signals."
+      ]
+    },
+    {
+      "id": "roadmap-confidence-gating",
+      "description": "Checks that only high-confidence, high-impact items make the roadmap and weaker ideas are relegated to a watchlist or omitted.",
+      "input": {
+        "product_context": "AI coding assistant",
+        "signals": [
+          "API 401 after payment.",
+          "Portal rate limits made the trial unusable.",
+          "Overthinking burns tokens.",
+          "Reasoning mode gets stuck in loops.",
+          "I wish there were more plugins.",
+          "How many Mac Studios do I need to run this locally?"
+        ]
+      },
+      "expectations": [
+        "API/access and reasoning issues should rank above ecosystem or local-model demand.",
+        "Low-confidence or thin-support themes should not be promoted into top priorities just to fill the roadmap.",
+        "If needed, lower-confidence opportunities may appear in a watchlist rather than the main roadmap."
+      ],
+      "failure_modes": [
+        "Places plugin ecosystem or local deployment ahead of proven failure modes.",
+        "Fills four roadmap slots regardless of evidence quality.",
+        "Uses one-off comments to justify major priorities."
+      ]
+    },
+    {
+      "id": "report-and-deck-export-expectations",
+      "description": "Checks that the skill produces both report and deck outputs with structured, presentation-quality HTML rather than raw Markdown dumps.",
+      "input": {
+        "product_context": "AI coding assistant",
+        "signals": [
+          "The model is good at coding.",
+          "Rate limits made the product unusable.",
+          "Reasoning mode overthinks.",
+          "The price is attractive."
+        ],
+        "requested_outputs": [
+          "report",
+          "deck"
+        ]
+      },
+      "expectations": [
+        "The report should be exported to `voice-of-market-report-YYYY-MM-DD.html`.",
+        "The deck should be exported to `voice-of-market-deck-YYYY-MM-DD.html`.",
+        "The report should use an editorial report layout with title block, summary callout, styled sections, quotes, and roadmap table.",
+        "The deck should use a slide-based layout with multiple slide template types and a clear visual hierarchy."
+      ],
+      "failure_modes": [
+        "Outputs only plain Markdown with no export.",
+        "Uses one repeated card layout for every slide.",
+        "Produces monochrome raw-document styling with no defined visual system."
+      ]
+    }
+  ]
 }
