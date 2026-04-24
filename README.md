@@ -1,6 +1,6 @@
 # Voice of Market Strategist
 
-`voice-of-market-strategist` is a Codex skill for turning messy customer and market feedback into a structured strategic readout.
+`voice-of-market-strategist` is an AI agent skill for turning messy customer and market feedback into a structured strategic readout.
 
 It is designed for AI product teams that want more than a summary. The skill aims to separate firsthand evidence from community noise, identify the strongest themes, and turn them into product, marketing, branding, technology, and growth recommendations.
 
